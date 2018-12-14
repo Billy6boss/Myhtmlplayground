@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>社團資料新增</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <!-- <link href="css/clubsettingstyle公版.css" rel="stylesheet"> -->
+    <link href="css/clubstyle.css" rel="stylesheet">
+
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/clubsetting.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <body>
+        <div id="portal_header">
+            <style>
+            #main_header{
+                width:100%;
+                border-width: 1px;
+                border-bottom-style: solid ;
+                border-bottom-color: gray;
+            }
+
+            #main_header ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                /*background-color: #dddddd;*/
+                font-family:"微軟正黑體", Arial, Helvetica, sans-serif !important;
+                padding-left:10px;
+                letter-spacing: 2.5px; /*字間距*/
+            }
+
+            #main_header li {
+                float: left;
+                display: block;
+                padding: 5px;
+            }
+
+            #main_header a {
+                text-decoration: none;
+            }
+            #main_header .header_menu:hover {
+                background-color:#d9d9d9;
+            }
+
+            #main_header .main_title{
+                color:#777777;
+                font-weight:bold !important; 
+                font-size: 18px;
+                line-height: 20px;
+            }
+
+            #main_header .main_info{
+                color:#777777;
+                font-size:12px;
+            }
+        </style>
+        <!-- <img src="/PortalHeader?img='Y'" width="25" height="25" alt=""> -->
+        <div id="main_header" style="background-color:white;">
+            <div class="nav">
+                <ul>
+                    <li class="main_title"><img src="/img/Logo1.png" width="25" height="25" alt=""><strong>  國教署  高中職校務行政系統</strong></li>
+                    <li class="header_menu"><a href="/Login" style="color:green;"><i style="font-size:24px" class="fa"></i><strong>回資訊系統首頁</strong></a></li>
+                    <li class="header_menu"><a href="/Logout" style="color:green;"><i style="font-size:24px" class="fa"></i>登出系統</a></li>
+                </ul>
+            </div>
+            <div class="nav">
+                <ul>
+                    <li class="main_info" style="color:gray;"><strong><i style="font-size:10px" class="fa"></i>通客服專線：</strong><span class="text-primary">(02)2771-2171分機3290或3296</span> | </li>
+                    <li class="main_info" style="color:gray;"><strong><i style="font-size:10px" class="fa"></i>服務信箱：</strong><span class="text-primary">hsa_service@ntut.edu.tw</span> | </li>
+                    <li class="main_info" style="color:gray;"><strong><i style="font-size:10px" class="fa"></i>服務時間：</strong><span class="text-primary">上班日 上午09:00~12:00 下午13:30~17:00</span> | </li>
+                    <li class="main_info" style="color:gray;"><small><i style="font-size:10px" class="fa"></i>DESKTOP-HUSO7GG</small></li>
+                </ul>
+            </div>
+            <div class="nav">
+                <!--  <ul><li class="main_info"  style="color:red;font-weight:bold;" ><strong><i style="font-size:10px" class="fa">&#xf0a4;</i></strong><span class="text-primary">學籍、班級和人事資料，定時於每天凌晨從全誼系統同步至本系統，提醒各校先與承辦人確認後至全誼系統進行相關設定，隔日再於本系統確認，謝謝。</span></li></ul> -->
+            </div>
+        </div>
+        <script>
+        </script></div>
+        <title>社團管理</title>
+        <script>
+            $(function() {
+                function doDelete(event) {
+                    if (confirm('確認刪除?')) {
+                        var target = $(this).parents('li');
+                        var club_seq = target.find('input[name=club_seq]').val();
+                        $.ajax({
+                            url : 'ClubMgt',
+                            type : 'post',
+                            data : {
+                                'club_seq' : club_seq,
+                                'op' : 'delete'
+                            },
+                            dataType : 'text',
+                            error : function(data) {
+                                alert('刪除時發生ajax error：' + data);
+                            },
+                            success : function(data) {
+                                alert(data);
+                                if (data === '刪除成功') {
+                                    target.remove();
+                                }
+                            }
+                        });
+                    }
+                }
+                function doSubmit(event) {
+                    $(this).parents('li').find('form[action=ClubMgt]').submit();
+                }
+
+                $('input[name=delete]').click(doDelete);
+                $('a.namelink').click(doSubmit);
+            });
+        </script>
+        <style>
+        .errormsg{
+            position: fixed;
+            margin: 5px 0px 5% 5%;
+            color: white;
+            font-weight: bold;
+            width: 90%;
+            z-index: 5;
+            text-align: center;
+            font-size: 20px;
+            display: inline-grid;
+        }
+        .errormsg span {
+            background-color: #FF0000B6;
+            padding: 10px;
+            margin-bottom: 1px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .errormsg span:hover{
+            background-color: #FF00004A;
+        }
+        .errormsg .fa-close{
+            float: right;
+        }
+        .errormsg .fa-warning{
+            margin-right: 5px;
+        }
+        /*導師選擇樣式*/
+        #app {
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 40px 50px rgba(0, 0, 0, 0.25);
+            outline: none;
+            font-size: 1em;
+        }
+        #app input {
+            outline: none;
+            width:36%;
+            border: 0;
+            float: left;
+            padding: 5px;
+        }
+        .positionuse{
+            position: relative;
+            width:100%;
+        }
+        .suggestbox{
+            position: absolute;
+            background-color: white;
+            top:36px;
+            width: 36%;
+            max-height: 196px;
+            overflow: auto;
+            display: none;
+        }
+        #main .suggestbox li{
+            border-top: none;
+            border-bottom: 1px solid lightgrey;
+            padding-left: 10px;
+
+        }
+        .suggestbox li:hover{
+            background-color:#118AFFFF; 
+        }
+        .suggestbox ul {
+            margin-bottom: 3px;
+        }
+        .suggestbox-select{
+            background-color:#118AFFFF; 
+        }
+        .teachertag {
+            border-radius: 3px;
+            background: #b5aff9;
+            float: left;
+            margin: 3px;
+            padding: 4px;
+            font-size: 1em;
+            /*vertical-align: middle;*/
+            box-shadow: 0px 1px 4px #c6c6c6, 0px 2px 17px #d1d1d1;
+        }
+        .teachertag a {
+            color: #000;
+            padding-right: 5px;
+            padding-left: 5px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            margin-right: 5px;
+        }
+        .teachertag span {
+            padding-right: 5px;
+            padding-left: 0px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+    </style>
+    <div class="errormsg">
+        <span>
+            <i class="fa fa-warning"></i>${error_msg.sbj_year}${error_msg.sbj_sem}
+            <i class="fa fa-close"></i>
+        </span>
+    </div>
+    <div id="outer">
+        <div id="portal_header"></div>
+        <div id="banner">
+           <div id="slider">
+              <img src="images/banner02.png" width="1200" height="90" alt="">
+          </div>
+      </div>  
+      <div id="main">		
+        <div align="left">
+            <!--menu -->
+            <div id="cssmenu">
+                <ul id="nav">
+                    <li><a id="Main" href="Main"><span>學務系統首頁</span></a></li>
+                    <li><a id="ClubMgt" href="ClubMgt"><span>社團系統首頁</span></a></li>
+                    <li class="has-sub"><a href="#" id="ClubSeletionLi" onclick="menujs('ClubSeletionLi')"><span>線上選社</span></a>
+                        <ul>
+                            <li><a id="ClubSelectionLi" href="ClubSelection"><span>線上選社</span></a></li> 
+                        </ul>
+                    </li>
+                    <li class="has-sub"><a href="#" id="ClubManagementLi" onclick="menujs('ClubManagementLi')"><span>社團管理</span></a>
+                        <ul>
+                            <li><a id="ClubAddLi" href="ClubAdd"><span>新增社團</span></a></li> 
+                            <li><a id="ClubSelectionMethodLi" href="ClubSelectionMethod"><span>線上選社設定</span></a></li> 
+                            <li><a id="ClubCopyLi" href="ClubCopy"><span>學期社團複製</span></a></li> 
+                            <li><a id="ClubTeacherLi" href="ClubTeacher"><span>社團教師基本資料</span></a></li> 
+                        </ul>
+                    </li>
+                    <li class="has-sub"><a href="#" id="ClubExportLi" onclick="menujs('ClubExportLi')"><span>社團報表列印</span></a>
+                        <ul>
+                            <li><a id="ClubExportLi" href="ClubExport"><span>社團報表列印</span></a></li> 
+                        </ul>
+                    </li>
+                    <li class="has-sub"><a href="#" id="ClubActivityLi" onclick="menujs('ClubActivityLi')"><span>社團活動</span></a>
+                        <ul>
+                            <li><a id="ClubActAppLi" href="ClubActApp"><span>社團活動申請</span></a></li> 
+                            <li><a id="ClubActReportLi" href="ClubActReport"><span>社團活動報告</span></a></li> 
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>		
+        <div id="content">										
+            <div id="box2"> 
+                <p>高中二 陳則維 您好：</p>
+                <form action="ClubSettings" method="post"
+                enctype="multipart/form-data" id="clubsettings">
+
+                <div class="clubbanner">
+                    <c:if test="${not empty club.img_url}">
+                    <div class="bgimg" style="background: url('${pageContext.request.contextPath}${club.img_url}') no-repeat center;"></div>
+                </c:if>
+                <div class="semtime">
+                    <select name="sbj_year" required>
+                        <c:forEach begin="103" end="${ud.sbj_year}" var="i">
+                        <option value="${i}"
+                        ${i == (club.sbj_year != null ? club.sbj_year : ud.sbj_year) ? 'selected' : ''}>${i}年</option>
+                    </c:forEach>
+                </select> / <select name="sbj_sem" required>
+                    <option value="1"
+                    ${(club.sbj_sem != null ? club.sbj_sem : ud.sbj_sem) == '1' ? 'selected' : ''}>上學期</option>
+                    <option value="2"
+                    ${(club.sbj_sem != null ? club.sbj_sem : ud.sbj_sem) == '2' ? 'selected' : ''}>下學期</option>
+                </select> 
+            </div>
+            <div class="clubname">
+                <input type="text" name="club_name" value="${club.club_name}"
+                required /> 
+            </div>
+            <div class="clubcat">
+                <select name="cat_no" required>
+                    <c:forEach items="${categories}" var="item">
+                    <option value="${item.cat_no}"
+                    ${club.cat_no == item.cat_no ? 'selected' : ''}>${item.cat_name}</option>
+                </c:forEach>
+            </select> 
+        </div>
+        <div>
+            <label class="filebtn"><input type="file" style="display: none;" name="img" accept="image/*" />更新圖片</label>
+        </div>
+    </div>
+    <div class="hortable">
+        <div class="tab linear">社團簡介</div>
+        <table>
+            <tr>
+                <td colspan="4" class="info">
+                    <textarea id="club_info"  name="club_info" maxlength="100">${club.club_info}</textarea>
+                    <div id="wordlimet" class="suggestingtight"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>社團教師：</td>
+                <td colspan="3">
+                    <div id="app">
+                        <div class="positionuse">
+                            <input type="text" placeholder="按Enter已完成輸入" autocomplete="off"/>
+                            <div class="suggestbox">
+                                <ul class="sugs">
+                                    <li>ABC</li>
+                                    <li>BBC</li>
+                                    <li>NBA</li>
+                                    <li>CSGO</li>
+                                    <li>AVA</li>
+                                    <li>AVA</li>
+                                    <li>TF2</li>
+                                    <li>BF5</li>
+                                    <li>Milk</li>
+                                    <li>一二三</li>
+                                    <li>陳一二</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tagHere"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>社團地點：</td>
+                <td colspan="3"><input type="text" name="club_room"
+                    value="${club.club_room}" /> 
+                </td>
+            </tr>
+            <tr>
+                <td>社團時間：</td>
+                <td id="clubtime">
+                    星期
+                    <select name="" id="date">
+                        <option value="1">一</option>
+                        <option value="2">二</option>
+                        <option value="3">三</option>
+                        <option value="4">四</option>
+                        <option value="5">五</option>
+                    </select>
+                    第
+                    <select name="" id="session">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                    </select>
+                    節
+                    <button id="addtime" class="savebtn mini"><i class="fa fa-plus" ></i></button>
+                    <br>
+                    <span id="clubtimeresult"></span>
+                    <button id="timereset" class="cancelbtn mini">重設</button>
+                </td>
+                <td>社團編號：</td>
+                <td class="mytooltip"><input type="text" name="club_no"
+                    value="${club.club_no}" /> </td>
+                </tr>
+                <tr>
+                    <td>社團網址：</td>
+                    <td colspan="3"><input type="url" class="fullsize"></td>
+                </tr>
+            </table>
+            <div class="tab linear">社團限制</div>
+            <table class="clubinfo">
+                <tr>
+                    <td>適用年級：</td>
+                    <td colspan="3">
+                        <label><input type="checkbox" name="grade" value="1" />一年級</label>
+                        <label><input type="checkbox" name="grade" value="2" />二年級</label>
+                        <label><input type="checkbox" name="grade" value="4" />三年級</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>性別取向：</td>
+                    <td colspan="3"><input type="radio" name="sex" value="2"
+                        ${club.sex == 2 ? 'checked' : ''} />女 <input type="radio"
+                        name="sex" value="1" ${club.sex == 1 ? 'checked' : ''} />男 <input
+                        type="radio" name="sex" value="0"
+                        ${club.sex != 1 && club.sex != 2 ? 'checked' : ''} />無 
+                    </td>
+                </tr>
+                <tr>
+                    <td>開放線上選社：</td>
+                    <td colspan="3"><input type="radio" name="open" value="false"
+                        ${!club.open ? 'checked' : ''} />否 <input type="radio"
+                        name="open" value="true" ${club.open ? 'checked' : ''} />是 
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="btngroup">
+            <input type="hidden" name="club_seq" value="${club.club_seq}" /> 
+            <input type="submit" class="savebtn" value="確認更新" />
+            <input type="submit" class="cancelbtn" value="取消" />
+        </div>
+    </form>
+    <br class="clear">
+</div>
+<br class="clear">
+</div>
+</div> 
+</body>
