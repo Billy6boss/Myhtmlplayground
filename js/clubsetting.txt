@@ -1,0 +1,143 @@
+$(document).ready(function(){
+  // 錯誤訊息關閉JQ
+  $(".errormsg span").click(function(){
+    $(this).hide();
+  });
+  // 錯誤訊息關閉JQ END
+ // 教師TAG
+ var $input = $("#app input"),$appendHere = $(".tagHere");
+ var teacher;
+ var currentFocus =-1;
+ var teacherlist = $(".sugs li");
+ 
+
+
+//點擊建議選項事件
+$(".suggestbox li").click(function () {
+  teacher = $(this).text();
+  $("#app input").val(teacher);
+  $(".positionuse input").focus();//擷取標籤文字並置放input
+
+});
+
+//出現建議選項事件
+$input.keyup(function(event){
+  var inputval = $(this).val().toUpperCase();//輸入轉大寫
+  $input.bind("input",function(){
+    inputval=this.value;
+  });
+  console.log(inputval);
+  if (inputval== '' || inputval == ' ') {
+    moveFocus("reset");//若input為空直則不顯示
+  }
+  else{
+    $(".suggestbox").show(); 
+  }
+  Stringcompar(inputval);
+});
+
+function Stringcompar(string) {
+   //比對字串
+   for (var i = 0; i < teacherlist.length; i++) {
+    if(teacherlist[i].innerHTML.toUpperCase().indexOf(string) > -1 ) {
+      teacherlist[i].style.display = "";
+    } else {
+      teacherlist[i].style.display = "none";//若相符字數為0
+    }
+
+  }
+  if ($(".sugs li:visible").length <=0) {//檢查是否有搜尋結果
+  // console.log($(".sugs li:visible").length);
+    return false;
+  }
+  else{
+    return true;
+  }
+}
+
+//Tag事件新增觸發
+$input.keydown(function(e){
+   var inputval = $(this).val().toUpperCase();//輸入轉大寫
+   if(Stringcompar(inputval)){
+
+    if (e.keyCode == 40) { //方向鍵下
+      moveFocus("down");//移動funtion
+      } 
+      else if (e.keyCode == 38) { //上
+        moveFocus("up");
+      } 
+      else if (e.keyCode == 13) { //Enter
+      e.preventDefault();
+        if (currentFocus > -1) {
+        teacherlist[currentFocus].click();//觸發點擊事件
+        moveFocus("reset");
+        }
+        else{//若目前Fouce在input且觸發Enter
+          if($(this).val() == '' || $(this).val() == ' ') {//且不為空值
+            moveFocus("reset");
+            return false;
+          } else 
+          addTag($(this)); //新增Tag
+          moveFocus("reset");
+          return false;
+        }
+      }
+    }
+  // if($(this).val() == '' && e.keyCode === 8) {
+  //   $(".tag:last-child").remove();
+  // }
+});
+//移動建議選項
+function moveFocus(diration){
+  teacherlist.removeClass("suggestbox-select");
+  
+  if (diration == "up") {//上移動
+    currentFocus--;
+    if(currentFocus < 0) currentFocus = (teacherlist.length -1);
+  }
+  else if (diration == "down") {//下移動
+    currentFocus++;
+    if (currentFocus >= teacherlist.length) currentFocus = 0;
+    console.log(currentFocus);
+  }
+  else if (diration == "reset"){//重製
+    currentFocus=-1;
+    $(".suggestbox").hide();
+  }
+
+  if (currentFocus > -1) {
+    if (teacherlist.eq(currentFocus).is(':hidden')) {//若為隱藏則不選取
+      moveFocus(diration);
+    }
+    else{
+      var scrollTop = div.scrollTop() / 41; 
+      var l = currentFocus - teacherlist.eq(currentFocus).addClass("suggestbox-select").prevAll('li:hidden').size();
+      if (l < scrollTop || l > (scrollTop + 4)) {
+        div.scrollTop((l - 4) * 41);
+      }
+  }
+}
+
+//建立Tag
+// <div><a><i>X</i><a/><span> 標籤名稱</span> </div>
+function addTag(element) {
+  var $tag = $("<div />"), $a = $("<a href='#' />"), $span = $("<span />");
+  $tag.addClass('tag');
+  $('<i class="fa fa-times" aria-hidden="true"></i>').appendTo($a);
+  $span.text($(element).val());
+  $a.bind('click', function(){
+    $(this).parent().remove();
+    $(this).unbind('click');
+  });
+  $a.appendTo($tag);
+  $span.appendTo($tag);
+  $tag.appendTo($appendHere);
+  $(element).val('');
+}
+
+ // 教師TAG END
+ $(document).click(function(){
+  moveFocus("reset");
+});
+
+});
