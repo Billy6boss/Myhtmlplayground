@@ -1,0 +1,233 @@
+/*社團自製樣式設定*/
+
+
+body{ 
+    background: url("../img/lined_paper.png") repeat;
+    font-family: "cwTeXYen", sans-serif; 
+    line-height: 1; 
+    font-size: 20px;
+}
+input[type = "text"]{
+    border-radius: 5px;
+    border : solid 1px #5FECDEFF;
+    box-shadow: 0 0 6px #FED2D2FF;
+    padding: 7px;
+
+}
+
+ul{
+    list-style:none;
+}
+#content  #box2 a{
+    color: #428bca;
+    text-decoration: none;   /* 消除連結底線 */
+}
+
+#content  #box2 a:hover{
+    color: #551A8B;
+    text-decoration: underline;
+}
+.nameseletion,.timeselection{
+    font-size: 22px;
+    margin-bottom: 30px;
+}
+#clubclassselect,#clubnumberselect,#clubnameselect{
+    position: relative;
+    display: inline-block;
+}
+#clubnumberselect{
+    width: 20%
+}
+#clubnameselect{
+    width: 35%
+}
+
+#clubclass,#clubnumber,#namesrc{
+    width: 100%;
+    /*position: absolute;*/
+}
+.nameseletion input:focus + .namesrc_lable,.nameseletion select:focus + .namesrc_lable{
+    visibility: visible;
+    top: -24px;
+    left: -10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.nameseletion label{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    visibility: hidden;
+    transition: all 0.15s;
+    width: 100%;
+    margin-left:10px;
+}
+.nameseletion select{
+    height: 33px;
+}
+.clubnumber{
+    width: 9%;
+}
+.clubclass{
+    border:none;
+    background-color: #7F92FFFF;
+    border-radius: 5px;
+    color: #ffffff;
+}
+.clubs{
+    width: 100%; 
+}
+.club1{
+    margin-bottom: 60px;
+    width: 90%;
+
+}
+.club1 .left{
+    float: left;
+    width: 16%;
+    border: 1px solid #CECECEFF;
+    border-radius: 5px;
+}
+.left div{
+    /*font-weight: bold;*/
+    border-bottom: 1px solid #CECECEFF;
+    text-align: center;
+}
+.left div p {
+    margin:auto;
+
+}
+.number{
+    font-weight: bold;
+    background-color: #000000FF;
+    border-radius: 5px 5px 0px 0px;
+    color: #ffffff;
+    padding:3px 0;
+    word-wrap:break-word; /*文字換行*/
+
+    /*background-color: #FF000080;*/
+}
+.edit input,.dele input{
+    width: 100%;
+    border:none;
+    color: black;
+    background-color: #00ffcc;
+    cursor: pointer;
+    transition: all 0.25s;
+    padding:3px 0;
+
+    /*background: linear-gradient(to top, #00ffcc 0%, #ffffff 150%);*/
+}
+.edit , .dele{
+    background-color:#00ffcc;
+    width: 100%;
+    cursor: pointer;
+    font-size: 20px;
+}
+.edit input:hover,.dele input:hover{
+    /*background: linear-gradient(to bottom, #00ffcc 0%, #ffffff 150%);*/
+    background-color: #32CCAD;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.club1 .right{
+    margin-left: 19%;
+}
+.classtab{
+    background-color: #7F92FFFF;
+    width: 20%;
+    font-size: 24px;
+    margin-right: 5px;
+    color: #FFFFFFFF;
+    text-align: center;
+    border-radius: 5px;
+    padding:2px 0px;
+
+}
+.clubname {
+    display: flex;
+    font-size: 24px;
+    margin:10px 0px 10px 10px;
+
+}
+.clubname .namelink {
+    width: 79%;
+    margin-left: 0px;
+    font-weight: bold;
+    color:#428bca;
+    text-align:left;
+}
+.namelink{
+    margin: auto;
+    font-size: 30px;
+}
+.clubinfo {
+    max-height: 100px;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.clublink{
+    margin-top: 15px;
+    font-size: 18px;
+    color: #a09ea2;
+
+}
+.primarybtn{
+   color: white; 
+   padding: 4px 14px;
+   border-radius: .28571rem;
+   line-height: 1.2142em;
+   font-size: 1em;
+   font-weight: 700;
+   border-width: 1px;
+   border-style: solid;
+}
+.primarybtn{
+    border-color: #00ADEA;
+    background:#00ADEA;
+}
+.primarybtn:hover{
+    background: #0092CB;
+    color: #ebebeb;
+}
+.primarybtn:active{
+    background: #005A8B;
+    color: #ebebeb;
+}
+.fixarae{
+    position: fixed;
+    right: 0;
+    top: 25%;
+    background-color: #FEF4E6FF;
+    height: 58px;
+    transition: all .2s;
+}
+.fixarae div{
+    padding:6px 5px;
+    display: inline-block;
+}
+#arrow{
+    float:left;
+    height: 100%;
+}
+#manuallist{
+    border-top: 1px solid #939393FF;
+    border-bottom: 1px solid #939393FF;
+    border-left: 1px solid #939393FF;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#manuallist.nowidth{
+    width: 0;
+    height: 0;
+    border: none;
+}
+
+.rotate{
+    transform: rotate(180deg);
+}

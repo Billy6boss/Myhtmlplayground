@@ -1,0 +1,52 @@
+/*
+
+	Design by Bill original style.css Club use update version 
+	Name       : CubleBasec
+	Version    : 1.0
+	Released   : 20180601
+	
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-size: 12pt;
+    background-image:url("/StuAffairs/images/lined_paper.png");
+    @import url(https://fonts.googleapis.com/earlyaccess/cwtexyen.css);
+ 	font-family: "cwTeXYen", sans-serif;
+    background-attachment:fixed; /*故定背景圖，不會跟著卷軸動*/
+    color: #c0c1c1;
+}
+#content {
+    width: 900px;
+    margin: 0px 0 0 245px;
+    padding: 10px;
+    /*background: #ffbf4d;*/
+    background: #99ccff;
+}
+
+#content  #box2 a{
+color:#4a4a4a;
+text-decoration: none;   /* 消除連結底線 */
+}
+
+#content  #box2 a:hover{
+color:red;
+text-decoration: underline;
+}
+
+#content2 {
+    width: 1160px;
+    margin: 20px 0 0 0px;
+    padding: 10px;
+    background: #ffbf4d;
+}
+#box2 {
+    margin: 0px 0 0px 0;
+    overflow: hidden;
+    padding:15px;
+    background-color:#ffffff;
+    color:#434343;
+}
